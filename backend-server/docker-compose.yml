@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  backend-server:
+    environment:
+      NODE_ENV: production
+      PORT: 8100
+      POSTGRES_HOST: postgres-db
+      POSTGRES_PORT: 5432
+    env_file:
+      - docker.env
+    depends_on:
+      - postgres-db
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: "sugardark/business-form-backend:latest"
+    ports:
+      - "8100:8100"
+  postgres-db:
+    image: "postgres:13"
+    environment:
+      POSTGRES_PORT: 5432
+    env_file:
+      - docker.env
+    ports:
+      - "25432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data

@@ -1,0 +1,89 @@
+# Visualize on https://erd.surge.sh
+# or https://quick-erd.surge.sh
+#
+# Relationship Types
+#  -    - one to one
+#  -<   - one to many
+#  >-   - many to one
+#  >-<  - many to many
+#  -0   - one to zero or one
+#  0-   - zero or one to one
+#  0-0  - zero or one to zero or one
+#  -0<  - one to zero or many
+#  >0-  - zero or many to one
+#
+////////////////////////////////////
+
+
+form_viewer
+-----------
+id integer PK
+form_id integer FK >- form.id
+user_id integer NULL FK >- user.id
+
+
+form_reference
+--------------
+id integer PK
+form_id integer FK >- form.id
+reference_form_id integer FK >- form.id
+
+
+form_response
+-------------
+id integer PK
+field_id integer FK >- field.id
+form_id integer FK >- form.id
+content varchar(255)
+
+
+template
+--------
+id integer PK
+name varchar(255)
+
+
+user
+----
+id integer PK
+is_admin boolean
+email varchar(255)
+hash_password varchar(255)
+
+
+field
+-----
+id integer PK
+template_id integer NULL FK >- template.id
+order integer
+label varchar(255)
+type varchar(255)
+
+
+form
+----
+id integer PK
+template_id integer FK >- template.id
+creator_id integer FK >- user.id
+filler_id integer FK >- user.id
+create_time timestamp NULL
+submit_time timestamp NULL
+submitted_title varchar(255)
+remove_time timestamp NULL
+
+
+# zoom: 0.882
+# view: (31, -25)
+# text-bg: #6495ed
+# text-color: #000000
+# diagram-bg: #f5f5f5
+# diagram-text: #f5f5f5
+# table-bg: #ffffff
+# table-text: #000000
+# form_viewer (681, 232)
+# form_reference (132, 131)
+# form_response (655, 53)
+# template (694, 551)
+# user (664, 385)
+# field (1053, 261)
+# form (127, 310)
