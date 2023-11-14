@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Inbox</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let form of allForms">
+      <ion-item
+        style="display: flex; justify-content: space-between; width: 100%"
+        [routerLink]="'/form-content/'+form.form_id"
+      >
+        <ion-label>{{form.creator_email}}</ion-label>
+
+        <ion-label>{{form.submitted_title}}</ion-label>
+
+        <ion-label>{{form.submit_time | date:'yyyy-MM-dd HH:mm'}}</ion-label>
+      </ion-item>
+      <ion-item slot="end">
+        <ion-button
+          [hidden]="form.role==='filler'"
+          color="danger"
+          (click)="deleteReceivedForm(form.form_id)"
+        >
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+        <ion-badge>{{form.role}}</ion-badge>
+      </ion-item>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<!-- [routerLink]="'/form/'+form.id" -->

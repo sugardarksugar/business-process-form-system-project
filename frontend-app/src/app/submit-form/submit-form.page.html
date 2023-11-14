@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Submit Form</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Title</ion-label>
+    <ion-input type="text" [(ngModel)]="submitFormContent.title"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Recipient: viewers</ion-label>
+    <ion-input
+      type="text"
+      [(ngModel)]="submitFormContent.viewer_emails"
+    ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Recipient: filler</ion-label>
+    <ion-input
+      type="text"
+      [(ngModel)]="submitFormContent.filler_email"
+    ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Form Template ID</ion-label>
+    <ion-input
+      readonly
+      type="number"
+      [(ngModel)]="submitFormContent.template_id"
+    ></ion-input>
+    <ion-button
+      slot="end"
+      (click)="submitFormContent.template_id = 0"
+      color="danger"
+      >clear</ion-button
+    >
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Form Template Name</ion-label>
+    <ion-input
+      type="text"
+      [(ngModel)]="templateName"
+      (ionChange)="searchTemplate()"
+    ></ion-input>
+  </ion-item>
+
+  <ion-list *ngIf="searchResult && !submitFormContent.template_id">
+    <ion-item *ngFor="let form of searchResult.forms">
+      <ion-label> #{{form.id}}: {{form.name}} </ion-label>
+      <ion-button (click)="selectedForm(form)" slot="end"> select </ion-button>
+      <ion-button slot="end"> preview </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item hidden>
+      <ion-label position="floating">Reference Form Template:</ion-label>
+      <ion-input
+        readonly
+        type="string"
+        [(ngModel)]="submitFormContent.referenceForms_ids"
+      ></ion-input>
+      <ion-button slot="end">clear</ion-button>
+    </ion-item>
+    <ion-list-header> Selected Reference Forms: </ion-list-header>
+    <ion-item *ngFor="let form of selectedRefForms">
+      <ion-label> #{{form.id}}: {{form.submitted_title}} </ion-label>
+      <ion-button slot="end" color="danger" (click)="unselectRefForm(form)">
+        remove
+      </ion-button>
+    </ion-item>
+    <ion-list-header> Select More Reference Forms </ion-list-header>
+    <ion-item>
+      <ion-label position="floating">Search Reference Form Title</ion-label>
+      <ion-input
+        type="text"
+        [(ngModel)]="referenceFormName"
+        (ionChange)="searchReferenceFormsByTitle()"
+      ></ion-input>
+    </ion-item>
+    <ion-list *ngIf="searchReferenceResult?.referenceForms">
+      <ion-item
+        *ngFor="let referenceForm of searchReferenceResult?.referenceForms"
+        [hidden]="hasSelectedRefForm(referenceForm)"
+      >
+        <ion-label>
+          #{{ referenceForm.id}}: {{ referenceForm.submitted_title}}
+        </ion-label>
+        <ion-button slot="end" (click)="selectRefForm(referenceForm)">
+          select
+        </ion-button>
+        <ion-button slot="end"> preview </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-list>
+  <ion-list>
+    <ion-button (click)="submitForm()"> submit </ion-button>
+  </ion-list>
+</ion-content>

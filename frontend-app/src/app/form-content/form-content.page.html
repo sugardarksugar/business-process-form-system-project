@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>formContent</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let refForm of refForms">
+    <ion-item-divider color="secondary">
+      Ref Form ID: {{refForm.form_id}}
+    </ion-item-divider>
+    <ion-item *ngFor="let field of refForm.fields">
+      <ion-label> {{field.label}}: {{field.content}} </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item-divider color="primary">
+      Filling Form ID: {{form_id}}</ion-item-divider
+    >
+    <ng-container *ngFor="let field of fields">
+      <ion-item>
+        <ion-label> {{field.label}}: </ion-label>
+        <ion-input
+          *ngIf=" (field.type === 'text' || field.type === 'date' || field.type==='time')  "
+          [type]="field.type"
+          [readonly]="this.permission!=='filler'"
+          [(ngModel)]="field.content"
+        ></ion-input>
+        <ion-checkbox
+          *ngIf="field.type === 'checkbox' && this.permission==='filler' "
+        ></ion-checkbox>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ion-button *ngIf="this.permission==='filler'" (click)="saveDraft()"
+    >Save Draft</ion-button
+  >
+</ion-content>
